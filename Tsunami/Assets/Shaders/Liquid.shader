@@ -9,6 +9,7 @@ Shader "Unlit/SpecialFX/Liquid"
         [HideInInspector] _WobbleZ ("WobbleZ", Range(-1,1)) = 0.0
         _TopColor ("Top Color", Color) = (1,1,1,1)
         _FoamColor ("Foam Line Color", Color) = (1,1,1,1)
+        _FoamColor1 ("Foam1 Line Color", Color) = (1,1,1,1)
         _Rim ("Foam Line Width", Range(0,0.1)) = 0.0
         _RimColor ("Rim Color", Color) = (1,1,1,1)
         _RimPower ("Rim Power", Range(0,10)) = 0.0
@@ -54,7 +55,7 @@ Shader "Unlit/SpecialFX/Liquid"
          sampler2D _MainTex;
          float4 _MainTex_ST;
          float _FillAmount, _WobbleX, _WobbleZ;
-         float4 _TopColor, _RimColor, _FoamColor, _Tint;
+         float4 _TopColor, _RimColor, _FoamColor, _FoamColor1, _Tint;
          float _Rim, _RimPower;
 
          float4 RotateAroundYInDegrees (float4 vertex, float degrees)
@@ -105,15 +106,20 @@ Shader "Unlit/SpecialFX/Liquid"
            // foam edge
            float4 foam = ( step(i.fillEdge, 0.5) - step(i.fillEdge, (0.5 - _Rim)))  ;
            float4 foamColored = foam * (_FoamColor * 0.9);
+
+           // foam edge
+           float4 foam1 = ( step(i.fillEdge, 0.5) - step(i.fillEdge, (0.5 - _Rim*2 )))  ;
+           float4 foamColored1 = foam1 * (_FoamColor1 * 0.9);
+
            // rest of the liquid
            float4 result = step(i.fillEdge, 0.5) - foam;
            float4 resultColored = result * col;
            // both together, with the texture
-           float4 finalResult = resultColored + foamColored;
+           float4 finalResult = resultColored + foamColored + foamColored1;
            finalResult.rgb += RimResult;
 
            // color of backfaces/ top
-           float4 topColor = _TopColor * (foam + result);
+           float4 topColor = _TopColor * (foam + foam1 + result);
            //VFACE returns positive for front facing, negative for backfacing
            return facing > 0 ? finalResult: topColor;
 
