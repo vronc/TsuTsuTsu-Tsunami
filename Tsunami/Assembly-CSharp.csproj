@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\scrip.cs" />
      <Compile Include="Assets\Scripts\Wobble.cs" />
      <None Include="Assets\Shaders\Liquid.shader" />
  <Reference Include="Unity.TextMeshPro.Editor">
