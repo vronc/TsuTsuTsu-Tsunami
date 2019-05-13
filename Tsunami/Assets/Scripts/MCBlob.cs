@@ -474,7 +474,7 @@
 			startObjs();
 			startEngine();
 		}
-
+		/*
 		//Unity and Sample specific
 		void Update () {
 
@@ -496,27 +496,54 @@
 
 			doFrame();
 
+		}*/
 
+	    [SerializeField] private SphereCollider[] blobColliders;
+
+		void Update () {
+			
+			//Update FPS and counters every second
+			if(lt+1<Time.time) {
+				lt=Time.time;
+			}
+			for (int i = 0; i < blobs.Length; i++)
+			{
+				blobs[i][0] = blobColliders[i].center.x;
+				blobs[i][1] = blobColliders[i].center.y;
+				blobs[i][2] = blobColliders[i].center.z;
+				blobs[i][3] = blobColliders[i].radius * blobColliders[i].transform.localScale.x * 2;
+			}
+			Regen();
+			doFrame();
 		}
 
 		//Unity and Sample Specific
 		void Start () {
 			lt=0f;
-			blobs=new float[5][];
-			blobs[0]=new float[]{.16f,.26f,.16f,.13f};
-			blobs[1]=new float[]{.13f,-.134f,.35f,.12f};
-			blobs[2]=new float[]{-.18f,.125f,-.25f,.16f};
-			blobs[3]=new float[]{-.13f,.23f,.255f,.13f};
-			blobs[4]=new float[]{-.18f,.125f,.35f,.12f};
+
+			if (blobColliders.Length == 0)
+			{
+				blobColliders = GetComponentsInChildren<SphereCollider>();
+			}
+
+			blobs = new float[blobColliders.Length][];
+			for (int i = 0; i < blobs.Length; i++)
+			{
+				blobs[i] = new float[] {
+					blobColliders[i].center.x,
+					blobColliders[i].center.y,
+					blobColliders[i].center.z,
+					blobColliders[i].radius * blobColliders[i].transform.localScale.x * 2
+				};
+				Debug.Log(blobColliders[i].center.x);
+			}
+
+			Update();
 
 			isoLevel=1.95f;
 
 			Regen();
-
-
-
 		}
-
 
 
 		/*Unity Specific starting of engine*/
