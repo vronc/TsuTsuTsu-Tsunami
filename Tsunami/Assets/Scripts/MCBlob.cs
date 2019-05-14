@@ -511,7 +511,7 @@
 				blobs[i][0] = blobColliders[i].center.x;
 				blobs[i][1] = blobColliders[i].center.y;
 				blobs[i][2] = blobColliders[i].center.z;
-				blobs[i][3] = blobColliders[i].radius * blobColliders[i].transform.localScale.x * 2;
+				blobs[i][3] = blobColliders[i].radius;
 			}
 			Regen();
 			doFrame();
@@ -533,9 +533,8 @@
 					blobColliders[i].center.x,
 					blobColliders[i].center.y,
 					blobColliders[i].center.z,
-					blobColliders[i].radius * blobColliders[i].transform.localScale.x * 2
+					blobColliders[i].radius
 				};
-				Debug.Log(blobColliders[i].center.x);
 			}
 
 			Update();
