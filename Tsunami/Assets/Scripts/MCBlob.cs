@@ -508,9 +508,9 @@
 			}
 			for (int i = 0; i < blobs.Length; i++)
 			{
-				blobs[i][0] = blobColliders[i].center.x;
-				blobs[i][1] = blobColliders[i].center.y;
-				blobs[i][2] = blobColliders[i].center.z;
+				blobs[i][0] = blobColliders[i].center.x + blobColliders[i].transform.localPosition.x;
+				blobs[i][1] = blobColliders[i].center.y + blobColliders[i].transform.localPosition.y;
+				blobs[i][2] = blobColliders[i].center.z + blobColliders[i].transform.localPosition.z;
 				blobs[i][3] = blobColliders[i].radius;
 			}
 			Regen();
@@ -530,9 +530,9 @@
 			for (int i = 0; i < blobs.Length; i++)
 			{
 				blobs[i] = new float[] {
-					blobColliders[i].center.x,
-					blobColliders[i].center.y,
-					blobColliders[i].center.z,
+					blobColliders[i].center.x + blobColliders[i].transform.localPosition.x,
+					blobColliders[i].center.y + blobColliders[i].transform.localPosition.y,
+					blobColliders[i].center.z + blobColliders[i].transform.localPosition.z,
 					blobColliders[i].radius
 				};
 			}
