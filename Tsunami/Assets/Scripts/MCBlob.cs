@@ -511,7 +511,7 @@
 				blobs[i][0] = blobColliders[i].center.x + blobColliders[i].transform.localPosition.x;
 				blobs[i][1] = blobColliders[i].center.y + blobColliders[i].transform.localPosition.y;
 				blobs[i][2] = blobColliders[i].center.z + blobColliders[i].transform.localPosition.z;
-				blobs[i][3] = blobColliders[i].radius;
+				blobs[i][3] = blobColliders[i].radius*2;
 			}
 			Regen();
 			doFrame();
@@ -533,13 +533,13 @@
 					blobColliders[i].center.x + blobColliders[i].transform.localPosition.x,
 					blobColliders[i].center.y + blobColliders[i].transform.localPosition.y,
 					blobColliders[i].center.z + blobColliders[i].transform.localPosition.z,
-					blobColliders[i].radius
+					blobColliders[i].radius*2
 				};
 			}
 
 			Update();
 
-			isoLevel=1.95f;
+			isoLevel=5.0f;
 
 			Regen();
 		}
