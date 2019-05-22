@@ -87,7 +87,9 @@
 		private Vector2[] tada2;
 		private int tadac,tadac2;
 		private int tadam=50000;
-
+		private GameObject bottom;
+		private GameObject top;
+		private float lampHeight;
 		/*Current frame counter*/
 		private int pctr=0;
 
@@ -390,19 +392,19 @@
 				jz=(int)((pb[2]+.5f)*dimZ);
 
 
-				while(jz>=0)
+				while(jy>=0)
 				{
 					mcCube cube=getCube(jx,jy,jz);
 					if(cube!=null && cube.cntr<pctr) {
 						if(doCube(cube)) {
 							recurseCube(cube);
-							jz=-1;
+							jy=-1;
 						}
 						cube.cntr=pctr;
 					} else {
-						jz=-1;
+						jy=-1;
 					}
-					jz-=1;
+					jy-=1;
 				}
 			}
 
@@ -477,7 +479,6 @@
 		/*
 		//Unity and Sample specific
 		void Update () {
-
 			//Update FPS and counters every second
 			if(lt+1<Time.time) {
 				lt=Time.time;
@@ -491,35 +492,41 @@
 			blobs[4][0]=.206f+.1f*(float)Mathf.Cos((float)Time.time*.5f);
 			blobs[4][1]=.056f+.2f*(float)Mathf.Sin((float)Time.time*.3f);
 			blobs[4][2]=.25f+.08f*(float)Mathf.Cos((float)Time.time*.2f);
-
 			transform.Rotate(Time.deltaTime*10f,0,Time.deltaTime*.6f);
-
 			doFrame();
-
 		}*/
 
-	    [SerializeField] private SphereCollider[] blobColliders;
+		[SerializeField] private SphereCollider[] blobColliders;
 
 		void Update () {
-			
+
 			//Update FPS and counters every second
 			if(lt+1<Time.time) {
 				lt=Time.time;
 			}
+			float bottomHeat = bottom.GetComponent<Heat>().celsius;
+
+			// floatation is reached when r = blob mass/(4pi)
+			float distance;
 			for (int i = 0; i < blobs.Length; i++)
 			{
 				blobs[i][0] = blobColliders[i].center.x + blobColliders[i].transform.localPosition.x;
 				blobs[i][1] = blobColliders[i].center.y + blobColliders[i].transform.localPosition.y;
 				blobs[i][2] = blobColliders[i].center.z + blobColliders[i].transform.localPosition.z;
-				blobs[i][3] = blobColliders[i].radius*2;
+				distance = Vector3.Distance(bottom.transform.position, blobColliders[i].transform.localPosition);
+				//Debug.Log(distance);
+				//Debug.Log(blobColliders[i].radius);
+				blobs[i][3] = blobColliders[i].radius;
 			}
-			Regen();
 			doFrame();
 		}
 
 		//Unity and Sample Specific
 		void Start () {
 			lt=0f;
+			bottom = this.transform.parent.gameObject.transform.GetChild(0).gameObject;
+			top = this.transform.parent.gameObject.transform.GetChild(1).gameObject;
+			lampHeight = Vector3.Distance(bottom.transform.position, top.transform.position);
 
 			if (blobColliders.Length == 0)
 			{
@@ -536,11 +543,6 @@
 					blobColliders[i].radius*2
 				};
 			}
-
-			Update();
-
-			isoLevel=5.0f;
-
 			Regen();
 		}
 
