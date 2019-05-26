@@ -8,7 +8,7 @@ public class Heat : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		celsius = 30.0f;
+		celsius = 20.0f;
     }
 
     // Update is called once per frame

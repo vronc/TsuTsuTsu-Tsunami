@@ -370,15 +370,16 @@
 			if(nCube!=null && nCube.cntr<pctr) {nCube.cntr=pctr; if(doCube(nCube)) { recurseCube(nCube); }}
 			nCube=getCube(jx,jy,jz-1);
 			if(nCube!=null && nCube.cntr<pctr) {nCube.cntr=pctr; if(doCube(nCube)) { recurseCube(nCube); }}
+			nCube=getCube(jx,jy+1,jz-1);
 
 
 
 
 		}
 
-		/*Go through all the Blobs, and travel from the center outwards in a negative Z direction
+		/*Go through all the Blobs, and travel from the center outwards in a negative Y direction
 	until we reach the surface, then begin to recurse around the surface. This isn't flawless
-	if the blob isn't completely within the lattice boundaries in the minimal Z axis and no
+	if the blob isn't completely within the lattice boundaries in the minimal Y axis and no
 	other blob that does check out is in contact with it. The blob will dissapear, but otherwise
 	works well*/
 		private void march()
@@ -392,7 +393,7 @@
 				jz=(int)((pb[2]+.5f)*dimZ);
 
 
-				while(jy>=0)
+				while(jy>=-1)
 				{
 					mcCube cube=getCube(jx,jy,jz);
 					if(cube!=null && cube.cntr<pctr) {
@@ -505,18 +506,28 @@
 				lt=Time.time;
 			}
 			float bottomHeat = bottom.GetComponent<Heat>().celsius;
-
 			// floatation is reached when r = blob mass/(4pi)
 			float distance;
+			float relativeTemperature;
 			for (int i = 0; i < blobs.Length; i++)
 			{
 				blobs[i][0] = blobColliders[i].center.x + blobColliders[i].transform.localPosition.x;
 				blobs[i][1] = blobColliders[i].center.y + blobColliders[i].transform.localPosition.y;
 				blobs[i][2] = blobColliders[i].center.z + blobColliders[i].transform.localPosition.z;
-				distance = Vector3.Distance(bottom.transform.position, blobColliders[i].transform.localPosition);
-				//Debug.Log(distance);
-				//Debug.Log(blobColliders[i].radius);
+				distance = Vector3.Distance(bottom.transform.position, blobColliders[i].transform.position);
+				Debug.Log(blobColliders[i].radius);
+
+				if (bottomHeat > 20.0f) {
+				Debug.Log("d "+distance);
+					relativeTemperature = bottomHeat - (bottomHeat - 20.0f)*(1.0f- Mathf.Exp(-distance*(1.0f/40.0f)));
+				Debug.Log("rt "+relativeTemperature);
+				blobColliders[i].radius = blobs[i][4] * (relativeTemperature / (40.0f));
+
+				} else {
+					blobColliders[i].radius = blobs[i][4] * (20.0f / (40.0f));
+				}
 				blobs[i][3] = blobColliders[i].radius;
+				isoLevel = blobColliders[i].radius*35f;
 			}
 			doFrame();
 		}
@@ -540,7 +551,8 @@
 					blobColliders[i].center.x + blobColliders[i].transform.localPosition.x,
 					blobColliders[i].center.y + blobColliders[i].transform.localPosition.y,
 					blobColliders[i].center.z + blobColliders[i].transform.localPosition.z,
-					blobColliders[i].radius*2
+					blobColliders[i].radius,
+					blobColliders[i].radius
 				};
 			}
 			Regen();

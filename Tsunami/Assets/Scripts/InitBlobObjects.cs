@@ -7,7 +7,7 @@ public class InitBlobObjects : MonoBehaviour
 	private SphereCollider m_collider;
 	private Rigidbody rb;
 	private BlobMovement movement;
-	private int nrOfBlobs = 1;
+	private int nrOfBlobs = 8;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,17 +15,17 @@ public class InitBlobObjects : MonoBehaviour
 
 			GameObject child = new GameObject();
 			child.transform.parent = this.gameObject.transform;
-			child.transform.position = new Vector3(0.75f*i, 0.0f, 0.5f*i);
+			child.transform.position = new Vector3(Random.value*1.5f, Random.value*3f, Random.value*1.5f);
 			m_collider = child.gameObject.AddComponent<SphereCollider>();
 			rb = child.gameObject.AddComponent<Rigidbody>();
 			rb.useGravity = false;
 			movement = child.gameObject.AddComponent<BlobMovement>();
 
 			rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-			rb.mass = 5.0f;
-			int j = i%2;
-			float floatation = Mathf.Pow(( (3*rb.mass) / (4*Mathf.PI) ),(1/3));
-			m_collider.radius = floatation;
+			rb.mass = 1.0f;
+			float floatationRadius = Mathf.Pow(( (3.0f*rb.mass) / (4.0f*Mathf.PI) ), (1f/3f));
+			float r = Random.Range(0f,0.05f);
+			m_collider.radius = floatationRadius+r;
 		}
 
     }
