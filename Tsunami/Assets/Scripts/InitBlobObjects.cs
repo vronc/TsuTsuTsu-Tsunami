@@ -7,7 +7,7 @@ public class InitBlobObjects : MonoBehaviour
 	private SphereCollider m_collider;
 	private Rigidbody rb;
 	private BlobMovement movement;
-	private int nrOfBlobs = 8;
+	private int nrOfBlobs = 7;
     // Start is called before the first frame update
     void Start()
     {

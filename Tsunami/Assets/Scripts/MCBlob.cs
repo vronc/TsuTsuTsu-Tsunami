@@ -477,25 +477,6 @@
 			startObjs();
 			startEngine();
 		}
-		/*
-		//Unity and Sample specific
-		void Update () {
-			//Update FPS and counters every second
-			if(lt+1<Time.time) {
-				lt=Time.time;
-			}
-			blobs[0][0]=.12f+.12f*(float)Mathf.Sin((float)Time.time*.50f);
-			blobs[0][2]=.06f+.23f*(float)Mathf.Cos((float)Time.time*.2f);
-			blobs[1][0]=.12f+.12f*(float)Mathf.Sin((float)Time.time*.2f);
-			blobs[1][2]=-.23f+.10f*(float)Mathf.Cos((float)Time.time*1f);
-			blobs[2][1]=-.03f+.24f*(float)Mathf.Sin((float)Time.time*.35f);
-			blobs[3][1]=.126f+.10f*(float)Mathf.Cos((float)Time.time*.1f);
-			blobs[4][0]=.206f+.1f*(float)Mathf.Cos((float)Time.time*.5f);
-			blobs[4][1]=.056f+.2f*(float)Mathf.Sin((float)Time.time*.3f);
-			blobs[4][2]=.25f+.08f*(float)Mathf.Cos((float)Time.time*.2f);
-			transform.Rotate(Time.deltaTime*10f,0,Time.deltaTime*.6f);
-			doFrame();
-		}*/
 
 		[SerializeField] private SphereCollider[] blobColliders;
 
@@ -509,23 +490,30 @@
 			// floatation is reached when r = blob mass/(4pi)
 			float distance;
 			float relativeTemperature;
+			float roomTemperature = 20.0f;
+			float floatationTemperature = 40.0f;
+
 			for (int i = 0; i < blobs.Length; i++)
 			{
 				blobs[i][0] = blobColliders[i].center.x + blobColliders[i].transform.localPosition.x;
 				blobs[i][1] = blobColliders[i].center.y + blobColliders[i].transform.localPosition.y;
 				blobs[i][2] = blobColliders[i].center.z + blobColliders[i].transform.localPosition.z;
-				distance = Vector3.Distance(bottom.transform.position, blobColliders[i].transform.position);
-				Debug.Log(blobColliders[i].radius);
+				Vector3 blobSurfacePos = new Vector3(
+					blobColliders[i].transform.position.x,
+					blobColliders[i].transform.position.y-blobColliders[i].radius,
+					blobColliders[i].transform.position.z );
 
-				if (bottomHeat > 20.0f) {
-				Debug.Log("d "+distance);
-					relativeTemperature = bottomHeat - (bottomHeat - 20.0f)*(1.0f- Mathf.Exp(-distance*(1.0f/40.0f)));
-				Debug.Log("rt "+relativeTemperature);
-				blobColliders[i].radius = blobs[i][4] * (relativeTemperature / (40.0f));
+				distance = Vector3.Distance(bottom.transform.position, blobSurfacePos);
 
+				if (bottomHeat > roomTemperature) {
+					// If the blob is further away from the bottom heat, less of the heat should affect it.
+					// the division with 20 will cause the heat effect to decay more gradually (it won't be too steep).
+					relativeTemperature = bottomHeat - (bottomHeat - roomTemperature)
+										 * (1.0f- Mathf.Exp(-distance/15f));
 				} else {
-					blobColliders[i].radius = blobs[i][4] * (20.0f / (40.0f));
+					relativeTemperature = roomTemperature;
 				}
+				blobColliders[i].radius = blobs[i][4] * (relativeTemperature / floatationTemperature);
 				blobs[i][3] = blobColliders[i].radius;
 				isoLevel = blobColliders[i].radius*35f;
 			}
