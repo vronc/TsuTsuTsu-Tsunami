@@ -20,3 +20,5 @@ In our implementation we've tried to take realistic steps to reach this.
 5. The blob's position is affected by the force.
 
 [Link to project blog](http://sabinavonessen.me/blog/)
+
+![](https://github.com/vronc/TsuTsuTsu-Tsunami/blob/master/BlobRef)
