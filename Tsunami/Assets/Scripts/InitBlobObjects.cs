@@ -15,7 +15,7 @@ public class InitBlobObjects : MonoBehaviour
 
 			GameObject child = new GameObject();
 			child.transform.parent = this.gameObject.transform;
-			child.transform.position = new Vector3(Random.value*1.5f, Random.value*3f, Random.value*1.5f);
+			child.transform.position = new Vector3(Random.value*1.5f, i, Random.value*1.5f);
 			m_collider = child.gameObject.AddComponent<SphereCollider>();
 			rb = child.gameObject.AddComponent<Rigidbody>();
 			rb.useGravity = false;

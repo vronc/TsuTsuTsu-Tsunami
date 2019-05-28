@@ -57,12 +57,9 @@
      <Compile Include="Assets\scrip.cs" />
      <Compile Include="Assets\Scripts\BlobMovement.cs" />
      <Compile Include="Assets\Scripts\Heat.cs" />
-     <Compile Include="Assets\Scripts\InitBlobColliders.cs" />
-     <Compile Include="Assets\Scripts\InitBlobColliders2.cs" />
      <Compile Include="Assets\Scripts\InitBlobObjects.cs" />
      <Compile Include="Assets\Scripts\MCBlob.cs" />
      <Compile Include="Assets\Scripts\valueToText.cs" />
-     <Compile Include="Assets\Scripts\Wobble.cs" />
      <None Include="Assets\_MK\MKGlassFree\Shader\MKGlassCommonFree.shader" />
      <None Include="Assets\_MK\MKGlassFree\Shader\Inc\Common\MKGlassInc.cginc" />
      <None Include="Assets\_MK\MKGlassFree\Shader\Inc\Meta\MKGlassMetaIO.cginc" />

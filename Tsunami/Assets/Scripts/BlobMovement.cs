@@ -5,8 +5,8 @@ using UnityEngine;
 public class BlobMovement : MonoBehaviour
 {
 	public float environmentDensity = 1.0f; //reference density
+	public float blobDensity;
 
-	private float blobDensity;
 	private float y_force;
 	private Rigidbody rb;
 	private SphereCollider s_collider;

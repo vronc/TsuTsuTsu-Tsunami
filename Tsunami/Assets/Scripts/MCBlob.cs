@@ -492,6 +492,7 @@
 			float relativeTemperature;
 			float roomTemperature = 20.0f;
 			float floatationTemperature = 40.0f;
+			float goalRadius;
 
 			for (int i = 0; i < blobs.Length; i++)
 			{
@@ -507,15 +508,18 @@
 
 				if (bottomHeat > roomTemperature) {
 					// If the blob is further away from the bottom heat, less of the heat should affect it.
-					// the division with 20 will cause the heat effect to decay more gradually (it won't be too steep).
+					// the division with 15 will cause the heat effect to decay more gradually (it won't be too steep).
 					relativeTemperature = bottomHeat - (bottomHeat - roomTemperature)
 										 * (1.0f- Mathf.Exp(-distance/15f));
 				} else {
 					relativeTemperature = roomTemperature;
 				}
-				blobColliders[i].radius = blobs[i][4] * (relativeTemperature / floatationTemperature);
+				// the goal radius is the radius the blob will reach when it reaches the set temperature.
+				// The radius will reach the goal radius over time.
+				goalRadius = blobs[i][4] * (relativeTemperature / floatationTemperature);
+				blobColliders[i].radius += Time.deltaTime*0.2f*(goalRadius - blobColliders[i].radius);
 				blobs[i][3] = blobColliders[i].radius;
-				isoLevel = blobColliders[i].radius*35f;
+				isoLevel = blobColliders[i].radius*30f;
 			}
 			doFrame();
 		}
@@ -532,6 +536,8 @@
 				blobColliders = GetComponentsInChildren<SphereCollider>();
 			}
 
+			// Assigning size of blobs from size of already created colliders.
+			// (The blobs will "follow" the colliders in terms of position and size)
 			blobs = new float[blobColliders.Length][];
 			for (int i = 0; i < blobs.Length; i++)
 			{
