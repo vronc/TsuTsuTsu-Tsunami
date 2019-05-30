@@ -13,10 +13,10 @@ The goal was to make the lava act realisticly by only changing one factor: __The
 
 In our implementation we've tried to take realistic steps to reach this.
 
-1. Temperature affects each blobs radius depending on their distance from the heat source (the bottom)
-2. The radius is affected by the temperature
-3. The density is affected by the radius
-4. The force applied on each blob is affected by the density
+1. Temperature is applied to each blob depending on its distance to the heat source.
+2. The radius of each blob is affected by the applied temperature.
+3. The density is affected by the radius.
+4. The force applied on each blob is affected by the density.
 5. The blob's position is affected by the force.
 
 [Link to project blog](http://sabinavonessen.me/blog/)
